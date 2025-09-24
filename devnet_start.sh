@@ -5,6 +5,8 @@ BASE_RPC=16110
 BASE_BORSH=16112
 
 for i in $(seq 1 $NODES); do
+	NODE_ID="node-$i"
+	LOG_DIR="/tmp/kaspalogs"
 	APPDIR="./target/node$i"
 	P2P=$((BASE_P2P + (i-1)*10))
 	RPC=$((BASE_RPC + (i-1)*10))
@@ -18,7 +20,7 @@ for i in $(seq 1 $NODES); do
 		PEERS="$PEERS --addpeer=127.0.0.1:$((BASE_P2P + (j-1)*10))"
 	done
 
-	./target/release/kaspad \
+	cargo run --bin kaspad -- \
 		--appdir $APPDIR \
 		--listen=127.0.0.1:$P2P \
 		--rpclisten=127.0.0.1:$RPC \
